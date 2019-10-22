@@ -1,39 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { IonInfiniteScroll } from '@ionic/angular';
+import { IpaddrService } from '../ipaddr.service';
 
 @Component({
   selector: 'app-list',
   templateUrl: 'list.page.html',
   styleUrls: ['list.page.scss']
 })
-export class ListPage implements OnInit {
-  private selectedItem: any;
-  private icons = [
-    'flask',
-    'wifi',
-    'beer',
-    'football',
-    'basketball',
-    'paper-plane',
-    'american-football',
-    'boat',
-    'bluetooth',
-    'build'
-  ];
-  public items: Array<{ title: string; note: string; icon: string }> = [];
-  constructor() {
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
+export class ListPage {
+  @ViewChild(IonInfiniteScroll, { static: true }) infiniteScroll: IonInfiniteScroll;
+
+  dataList: any;
+  public ip_addr: string = '';
+
+  constructor(
+    private IpAddrService: IpaddrService,
+  ) {
+    this.dataList = [];
+
+    for (let i = 0; i < 25; i++) {
+      this.dataList.push("Item number " + this.dataList.length);
     }
   }
 
-  ngOnInit() {
+  loadData(event) {
+
+    this.ip_addr = this.IpAddrService.ip_addr;
+    console.log('getItems : ' + this.ip_addr + 'solar_breath/select_sum_all.php' );
+
+    setTimeout(() => {
+      console.log('Done');
+      for (let i = 0; i < 25; i++) {
+        this.dataList.push("Item number " + this.dataList.length);
+      }
+      event.target.complete();
+
+      // App logic to determine if all data is loaded
+      // and disable the infinite scroll
+      if (this.dataList.length == 1000) {
+        event.target.disabled = true;
+      }
+    }, 500);
   }
-  // add back when alpha.4 is out
-  // navigate(item) {
-  //   this.router.navigate(['/list', JSON.stringify(item)]);
-  // }
+
+  toggleInfiniteScroll() {
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+  }
 }

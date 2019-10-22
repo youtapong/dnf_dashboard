@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color='tertiary'>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>ข้อมูล Node</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-searchbar color="dark_blue" [(ngModel)]="queryText" placeholder="IP Subnet">
+    </ion-searchbar>
+
+    <ion-row>
+      <ion-col width-50 style="text-align:center">
+        <ion-button color="primary" small round large (click)="getItems()">
+          <ion-icon name="bulb"></ion-icon>&nbsp;Search
+        </ion-button>
+
+        <ion-button color="secondary" small round large (click)="summary(totalData, countData, queryText, create_date)">&nbsp;
+          <ion-icon name="bookmark"></ion-icon>&nbsp;Summary&nbsp;
+        </ion-button>
+
+        <ion-button color="success" small round large (click)="doHelp()">&nbsp;
+          <ion-icon name="bulb"></ion-icon>&nbsp;&nbsp;Help&nbsp;&nbsp;
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding color="tong_color">
+    <h3>Date : {{ this.create_date }}</h3>
+  <ion-list padding>
+    <ion-item ion-item *ngFor="let data of data; let i = index">
+      <ion-avatar slot="start">
+        <img src="./assets/images/{{data.type}}.png">
+      </ion-avatar>
+      <ion-label (click)="presentToast(data)">
+        <h2>node_name : {{ data.node_name}}</h2>
+        <h3>region : {{ data.region }}</h3>
+        <h3>type : {{ data.type }}</h3>
+        <p>total_ports : {{ data.total_ports }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="doInfinite($event)" *ngIf="page < totalPage">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

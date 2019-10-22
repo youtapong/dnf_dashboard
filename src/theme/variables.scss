@@ -3,6 +3,15 @@
 
 /** Ionic CSS Variables **/
 :root {
+
+  /** Tong Color **/
+  --ion-color-tong_color: linear-gradient(to left, #39a5fd, #aeebff, #aeebff, #39a5fd); /* for Ionic */
+    --ion-color-tong_color-rgb: 23,46,234;
+    --ion-color-tong_color-contrast: #ffffff;
+    --ion-color-tong_color-contrast-rgb: 255,255,255;
+    --ion-color-tong_color-shade: #1428ce;
+    --ion-color-tong_color-tint: #2e43ec;
+
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
@@ -74,4 +83,19 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+}
+.ion-color-tong_color {
+  --ion-color-base: var(--ion-color-tong_color);
+  --ion-color-base-rgb: var(--ion-color-tong_color-rgb);
+  --ion-color-contrast: var(--ion-color-tong_color-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-tong_color-contrast-rgb);
+  --ion-color-shade: var(--ion-color-tong_color-shade);
+  --ion-color-tint: var(--ion-color-tong_color-tint);
+}
+
+ion-alert {
+  --background: #ffffff !important;
+  --ion-text-color: rgb(21, 0, 113) !important;
+  --ion-color-step-550: rgb(23, 116, 0) !important;
+  --inner-border-width: 1;
 }
