@@ -7,7 +7,7 @@
   </ion-toolbar>
 
   <ion-toolbar>
-    <ion-searchbar color="dark_blue" [(ngModel)]="queryText" placeholder="IP Subnet">
+    <ion-searchbar color="dark_blue" [(ngModel)]="queryText" placeholder="Node Name">
     </ion-searchbar>
 
     <ion-row>
@@ -30,6 +30,9 @@
 
 <ion-content padding color="tong_color">
     <h3>Date : {{ this.create_date }}</h3>
+
+ 
+
   <ion-list padding>
     <ion-item ion-item *ngFor="let data of data; let i = index">
       <ion-avatar slot="start">

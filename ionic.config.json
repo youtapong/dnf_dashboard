@@ -1,5 +1,7 @@
 {
   "name": "solar_breath",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

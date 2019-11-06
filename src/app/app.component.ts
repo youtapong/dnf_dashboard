@@ -17,9 +17,14 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
+      title: 'Report',
+      url: '/report',
+      icon: 'folder-open'
+    },
+    {
+      title: 'Report Port',
+      url: '/report-port',
+      icon: 'folder-open'
     },
     {
       title: 'Node List',
