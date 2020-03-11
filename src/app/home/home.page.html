@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar color='darkblue'>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-icon slot="start" color="light" name="home"></ion-icon>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="welcome-card">
+    <img src="./assets/images/solar_logo01.png" alt="Main" />
+    <ion-card-header>
+      <ion-card-subtitle>Data from SolarWinds</ion-card-subtitle>
+      <ion-card-title>Welcome to Solar Breath </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>ลมหายใจสุริยะ แห่งโซลาวินด์</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="welcome-card" color="tong_color">
+    <ion-card-header>
+      <ion-card-title>Resource</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>
+        <ion-list>
+
+          <ion-item>
+            <img slot="start" src="./assets/svg/folder-10.svg" style="width: 24px; height: 24px;">           
+            <ion-label>
+              <ion-button expand="block" color="primary" round large (click)="goReport()">
+                สรุปรายงาน
+              </ion-button>
+            </ion-label>
+          </ion-item>
+
+
+
+          <ion-item>
+            <ion-icon slot="start" color="primary" name="disc"></ion-icon>
+            <ion-label>
+              <ion-button expand="block" color="primary" round large (click)="goNodeList()">
+                ค้นหาด้วยชื่อ
+              </ion-button>
+            </ion-label>
+          </ion-item>
+
+
+          <ion-item>
+            <img slot="start" src="./assets/svg/user-7.svg" style="width: 24px; height: 24px;">
+            <ion-label>
+              <ion-button expand="block" color="primary" round large (click)="goAbout_us()">
+                About Us
+              </ion-button>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

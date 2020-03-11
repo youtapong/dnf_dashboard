@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color='darkblue'>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Report Port</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-item>
+      <ion-datetime displayFormat="YYYY-MM-DD" min="2019-01-01" [(ngModel)]="queryDate" placeholder="Select Date">
+      </ion-datetime>
+    </ion-item>
+
+    <ion-row>
+      <ion-col width-50 style="text-align:center">
+        <ion-button color="primary" small round large (click)="getItems()">
+          <ion-icon name="bulb"></ion-icon>&nbsp;Search
+        </ion-button>
+
+        <ion-button color="success" small round large (click)="doHelp()">&nbsp;
+          <ion-icon name="bulb"></ion-icon>&nbsp;&nbsp;Help&nbsp;&nbsp;
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding color="tong_color">
+
+
+  <h3>queryDate : {{ this.queryDate}}</h3>
+
+
+
+  
+
+</ion-content>
