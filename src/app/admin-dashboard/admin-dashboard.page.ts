@@ -1,6 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
-import { MenuController, NavController } from '@ionic/angular';
+import { LoadingController, AlertController, MenuController, NavController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
+import { IpaddrService } from '../ipaddr.service';
+import { ToastController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+
+interface resultData {
+  cus_id: string,
+  ncd_customer1: string,
+  ncd_device: any[],
+  companyName: string,
+  Product_Name: string,
+  customerTypeName: string,
+  customerId: string,
+}
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -11,21 +25,72 @@ export class AdminDashboardPage implements OnInit {
 
   bars: any;
   colorArray: any;
+  /////// data from json
+  public ncd_device: any[] = [];
+  public cus_id: string = '';
+  public ncd_customer1: string = '';
+  /////// end data from json
+  public ip_addr: string = '';
+  public ip_addr2: string = '';
+  public ip_addr3: string = '';
+  public service_id: string = '0213300mml0129';
+
+  public companyName: string = '';
+  public Product_Name: string = '';
+  public customerTypeName: string = '';
+  public customerId: string = '';
+  sub: Subscription;
 
   constructor(
     private navCtrl: NavController,
-    private menu: MenuController
-    ) { }
+    private menu: MenuController,
+    private IpaddrService: IpaddrService,
+    private alertCtrl: AlertController,
+    public http: HttpClient,
+    public loadingCtrl: LoadingController,
+    private toastController: ToastController
+  ) { }
 
   ngOnInit() {
     //// disable menu
     this.menu.enable(false);
-    
-    this.chart_pie();
-    this.chart_bar();
+    this.presentLoading();
+    ////// ทำครั้งแรกเมื่อโหลด  หรือ click ปุ่ม
+
     this.chart_doughnut();
-    this.chart_radar();
-    this.chart_line();
+
+    this.getItems();
+    this.getCust();
+    this.hideLoader();
+
+  }
+
+  getItems() {
+    this.ip_addr3 = this.IpaddrService.ip_addr3;
+    //console.log('getItems' + this.ip_addr + 'solar_breath/select_sum_all.php?queryString=' + this.queryText + '&page=' + this.page);
+    this.sub = this.http.get(
+      this.ip_addr + this.service_id
+    ).subscribe((result: resultData) => {
+      this.ncd_device = result.ncd_device;
+      this.cus_id = result.cus_id;
+      this.ncd_customer1 = result.ncd_customer1;
+     
+    });
+  }
+
+
+  getCust() {
+    this.ip_addr2 = this.IpaddrService.ip_addr2;
+    this.sub = this.http.get(
+      this.ip_addr2 + this.service_id
+    ).subscribe((result: resultData) => {
+      this.companyName = result.companyName;
+      this.Product_Name = result.Product_Name;
+      this.customerTypeName = result.customerTypeName;
+      this.customerId = result.customerId;
+      //console.log('This is Test = '+ this.ip_addr2 + this.service_id );
+
+    });
 
   }
 
@@ -37,75 +102,6 @@ export class AdminDashboardPage implements OnInit {
   ngOnDestroy() {
     /// เปิด side menu
     this.menu.enable(true);
-  }
-
-  chart_pie() {
-    var ctx = (<any>document.getElementById('canvas-chart')).getContext('2d');
-    var chart = new Chart(ctx, {
-      // The type of chart we want to create
-      type: 'pie',
-
-      // The data for our dataset
-      data: {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
-        datasets: [{
-          label: "My First dataset",
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          data: [0, 10, 5, 2, 20, 30, 45],
-          borderWidth: 1
-        }]
-      }
-    });
-  }
-
-  chart_bar() {
-    var ctx = (<any>document.getElementById('bar-chart')).getContext('2d');
-    var chart = new Chart(ctx, {
-      // The type of chart we want to create
-      //type: 'bar',
-      type: 'horizontalBar',
-
-      // The data for our dataset
-      data: {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
-        datasets: [{
-          label: "My First dataset",
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          data: [0, 10, 5, 2, 20, 30, 45],
-          borderWidth: 1
-        }]
-      }
-    });
   }
 
   chart_doughnut() {
@@ -134,57 +130,25 @@ export class AdminDashboardPage implements OnInit {
     });
   }
 
+  presentLoading() {
+    this.loadingCtrl.create({
+      message: 'ช้าๆ ได้พร้าเล่มงาม ',
+      duration: 1000
+    }).then((res) => {
+      res.present();
 
-  chart_radar() {
-    var ctx = (<any>document.getElementById('radar-chart')).getContext('2d');
-    var chart = new Chart(ctx, {
-      // The type of chart we want to create
-      type: "radar",
-      data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)"
-            ],
-            hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#FF6384", "#36A2EB", "#FFCE56"]
-          }
-        ]
-      }
+      res.onDidDismiss().then((dis) => {
+        console.log('Loading dismissed! after 1 Seconds');
+      });
     });
   }
-  chart_line() {
-    var ctx = (<any>document.getElementById('line-chart')).getContext('2d');
-    var chart = new Chart(ctx, {
-      // The type of chart we want to create
-      type: "line",
-      data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)"
-            ],
-            hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#FF6384", "#36A2EB", "#FFCE56"]
-          }
-        ]
-      }
-    });
+
+  hideLoader() {
+    setTimeout(() => {
+      this.loadingCtrl.dismiss();
+    }, 500);
   }
+
 
 }
 
